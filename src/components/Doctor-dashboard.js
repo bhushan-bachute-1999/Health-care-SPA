@@ -18,11 +18,12 @@ const PatientInfo = (props) => {
 const Header = () => {
   const searchRef = useRef("");
   const dispatch = useDispatch();
+  const { loggedInDoctor } = useSelector((state) => state.doctor);
   return (
     <div className="flex justify-between shadow-lg px-4 py-2 items-center">
       <div className="flex justify-between items-center">
         <img className="h-10 w-10 mr-4" alt="logo" src={Logo} />
-        <span className="mr-10">Dr. Bhushan Bachute(MBBS,MD)</span>
+        <span className="mr-10">{loggedInDoctor.name}</span>
       </div>
       <div className="flex w-5/12 items-center">
         <input

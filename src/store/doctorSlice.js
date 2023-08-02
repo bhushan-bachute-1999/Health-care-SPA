@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { redirect } from "react-router-dom";
 
 const initialState = {
   doctors: [],
@@ -30,6 +31,7 @@ const doctorSlice = createSlice({
       );
       if (index === -1) {
         alert("Please sing up to continue");
+        return redirect("/doctor-sign-up");
       } else {
         if (state.doctors[index].password !== action.payload.password) {
           alert("Username / Password incorrect");
