@@ -16,14 +16,17 @@ const Home = () => {
         />
         <span className="text-white">Doctor</span>
       </Link>
-      <h1 className="text-2xl bg-emerald-600 rounded-lg m-2 py-2 px-4 flex flex-row justify-center items-center w-60">
+      <Link
+        to="/patient-signup"
+        className="text-2xl bg-emerald-600 rounded-lg m-2 py-2 px-4 flex flex-row justify-center items-center w-60"
+      >
         <img
           alt="doc-icon"
           className="w-10 mr-4 "
           src="https://cdn-icons-png.flaticon.com/512/2869/2869812.png"
         />
         <span className="text-white">Patient</span>
-      </h1>
+      </Link>
       <Link className="text-2xl bg-emerald-600 rounded-lg m-2 py-2 px-4 flex flex-row justify-center items-center w-60">
         <img
           alt="doc-icon"

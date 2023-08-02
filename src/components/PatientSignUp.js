@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { patientRegister } from "../store/patientSlice";
 import uniqid from "uniqid";
 
-const PatientRegister = () => {
+const PatientSignUp = () => {
   const nameRef = useRef("");
   const ageRef = useRef("");
   const genderRef = useRef(null);
@@ -30,7 +30,7 @@ const PatientRegister = () => {
         address: addressRef.current,
         contact: contactRef.current,
         doctor: loggedInDoctor,
-        bloodGroup: bloodGroup.current,
+        bloodGroup: bloodGroup,
       })
     );
     navigate("/doctor-dashboard/home");
@@ -94,12 +94,31 @@ const PatientRegister = () => {
           className="w-1/4 border border-black rounded-lg h-10 px-4 py-2 m-2"
           name="p-bg"
           id="p-bg"
-          onChange={(e) => (bloodGroup.current = e.target.value)}
         >
-          <option value="O +ve">O +ve</option>
-          <option value="AB +ve">AB +ve</option>
-          <option value="O -ve">O -ve</option>
-          <option value="AB -ve">AB -ve</option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="O +ve"
+          >
+            O +ve
+          </option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="AB +ve"
+          >
+            AB +ve
+          </option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="O -ve"
+          >
+            O -ve
+          </option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="AB -ve"
+          >
+            AB -ve
+          </option>
         </select>
         {/* <input
           className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
@@ -139,4 +158,4 @@ const PatientRegister = () => {
   );
 };
 
-export default PatientRegister;
+export default PatientSignUp;

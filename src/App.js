@@ -6,6 +6,8 @@ import DoctorDashboard, {
 } from "./components/Doctor-dashboard";
 import PatientRegister from "./components/PatientRegister";
 import NewDoctorSignup from "./components/NewDoctorSignup";
+import PatientDashboard from "./components/Patient-Dashboard";
+import PatientSignUp from "./components/PatientSignUp";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
         element: <PatientRegister />,
       },
     ],
+  },
+  {
+    path: "/patient-dashboard",
+    element: <PatientDashboard />,
+  },
+  {
+    path: "/patient-signup",
+    element: <PatientSignUp />,
   },
 ]);
 

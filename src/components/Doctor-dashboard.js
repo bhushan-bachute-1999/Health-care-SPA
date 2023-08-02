@@ -5,12 +5,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchText } from "../store/doctorSlice";
 
 const PatientInfo = (props) => {
-  const { name, LVD, city } = props.info;
+  const { name, age, address, contact, gender, bloodGroup } = props.info;
   return (
     <tr>
-      <td className="border w-80 border-black py-2 px-4 text-center">{name}</td>
-      <td className="border w-80 border-black py-2 px-4 text-center">{LVD}</td>
-      <td className="border w-80 border-black py-2 px-4 text-center">{city}</td>
+      <td className="border w-3/12 border-black py-2 px-4 text-center">
+        {name}
+      </td>
+      <td className="border w-2/12 border-black py-2 px-4 text-center">
+        {gender}
+      </td>
+      <td className="border w-2/12 border-black py-2 px-4 text-center">
+        {bloodGroup}
+      </td>
+      <td className="border w-2/12 border-black py-2 px-4 text-center">
+        {age}
+      </td>
+      <td className="border w-3/12 border-black py-2 px-4 text-center">
+        {address}
+      </td>
+      <td className="border w-2/12 border-black py-2 px-4 text-center">
+        {contact}
+      </td>
     </tr>
   );
 };
@@ -63,18 +78,35 @@ export const PatientListTable = () => {
       p.doctor.email === loggedInDoctor.email &&
       p.name.toLowerCase().includes(searchText.toLowerCase())
   );
+  console.log(searchResult);
 
+  if (searchResult.length === 0) {
+    return (
+      <span className="font-extrabold text-3xl m-auto">No patient record</span>
+    );
+  }
   return (
     <table className="m-4">
       <thead>
         <tr>
-          <th className="border w-80 border-black py-2 px-4 text-center">
+          <th className="border w-4/12 border-black py-2 px-4 text-center">
             Name
           </th>
-          <th className="border w-48 border-black py-2 px-4">
-            Last visit date
+          <th className="border w-1/12 border-black py-2 px-4 text-center">
+            Gender
           </th>
-          <th className="border w-48 border-black py-2 px-4">City</th>
+          <th className="border w-1/12 border-black py-2 px-4 text-center">
+            Blood group
+          </th>
+          <th className="border w-1/12 border-black py-2 px-4 text-center">
+            Age
+          </th>
+          <th className="border w-4/12 border-black py-2 px-4 text-center">
+            Address
+          </th>
+          <th className="border w-3/12 border-black py-2 px-4 text-center">
+            Contact
+          </th>
         </tr>
       </thead>
       <tbody>
