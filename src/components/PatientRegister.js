@@ -2,10 +2,12 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { patientRegister } from "../store/patientSlice";
-import uniqid from "uniqid";
+import patientId from "../static/patient-id";
 
 const PatientRegister = () => {
-  const nameRef = useRef("");
+  const fname = useRef("");
+  const mname = useRef("");
+  const lname = useRef("");
   const ageRef = useRef("");
   const genderRef = useRef(null);
   const addressRef = useRef("");
@@ -16,40 +18,76 @@ const PatientRegister = () => {
   const { loggedInDoctor } = useSelector((state) => state.doctor);
   const navigate = useNavigate();
 
+  const generatePatientId = (patient) => {
+    const { fname, mname, lname } = patient;
+    const key = fname[0] + mname[0] + lname[0];
+    const hasKey = patientId.has(key);
+    if (hasKey) {
+      let len = patientId.get(key).length;
+      patientId.get(key).push(patient);
+      return key + len;
+    }
+    patientId.set(key, [patient]);
+    return key + 0;
+  };
+
   const registerPatient = (e) => {
     e.preventDefault();
     navigate(
-      `/doctor-dashboard/register-patient/name=${nameRef.current}&gender=${genderRef.current}&age=${ageRef.current}`
+      `/doctor-dashboard/register-patient/name=${fname.current}&gender=${genderRef.current}&age=${ageRef.current}`
     );
-    dispatch(
-      patientRegister({
-        id: uniqid(),
-        name: nameRef.current,
-        age: ageRef.current,
-        gender: genderRef.current,
-        address: addressRef.current,
-        contact: contactRef.current,
-        doctor: loggedInDoctor,
-        bloodGroup: bloodGroup.current,
-      })
-    );
+    let patient = {
+      fname: fname.current,
+      mname: mname.current,
+      lname: lname.current,
+      age: ageRef.current,
+      gender: genderRef.current,
+      address: addressRef.current,
+      contact: contactRef.current,
+      doctor: loggedInDoctor,
+      bloodGroup: bloodGroup.current,
+    };
+    const id = generatePatientId(patient);
+    dispatch(patientRegister({ id: id, ...patient }));
     navigate("/doctor-dashboard/home");
   };
 
   return (
     <form
       onSubmit={registerPatient}
-      className="w-2/5 p-4 border border-black m-auto mt-10 rounded-lg"
+      className="w-3/4 p-4 border border-black m-auto mt-10 rounded-lg"
     >
-      <div className="flex flex-col mt-4">
-        <label htmlFor="p-name">Name</label>
-        <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
-          id="p-name"
-          type="text"
-          onChange={(e) => (nameRef.current = e.target.value)}
-          placeholder="Enter patient name"
-        />
+      <div className="flex mt-4">
+        <div>
+          <label htmlFor="p-name">First Name</label>
+          <input
+            className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+            id="p-name"
+            type="text"
+            onChange={(e) => (fname.current = e.target.value)}
+            placeholder="Enter patient name"
+          />
+        </div>
+        <div className="ml-4">
+          <label htmlFor="p-name">Middle Name</label>
+          <input
+            className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+            id="p-name"
+            type="text"
+            onChange={(e) => (mname.current = e.target.value)}
+            placeholder="Enter patient name"
+          />
+        </div>
+        <div>
+          <label htmlFor="p-name">Last Name</label>
+          <input
+            className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+            id="p-name"
+            type="text"
+            onChange={(e) => (lname.current = e.target.value)}
+            placeholder="Enter patient name"
+          />
+        </div>
       </div>
       <div className="flex flex-col mt-4">
         <span>Gender</span>
@@ -81,7 +119,7 @@ const PatientRegister = () => {
       <div className="flex flex-col mt-4">
         <label htmlFor="p-age">Age</label>
         <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+          className="w-2/5 h-8 px-4 py-2 m-2 border border-black rounded-lg"
           id="p-age"
           type="number"
           onChange={(e) => (ageRef.current = e.target.value)}
@@ -94,25 +132,37 @@ const PatientRegister = () => {
           className="w-1/4 border border-black rounded-lg h-10 px-4 py-2 m-2"
           name="p-bg"
           id="p-bg"
-          onChange={(e) => (bloodGroup.current = e.target.value)}
         >
-          <option value="O +ve">O +ve</option>
-          <option value="AB +ve">AB +ve</option>
-          <option value="O -ve">O -ve</option>
-          <option value="AB -ve">AB -ve</option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="O +ve"
+          >
+            O +ve
+          </option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="AB +ve"
+          >
+            AB +ve
+          </option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="O -ve"
+          >
+            O -ve
+          </option>
+          <option
+            onChange={(e) => (bloodGroup.current = e.target.value)}
+            value="AB -ve"
+          >
+            AB -ve
+          </option>
         </select>
-        {/* <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
-          id="p-bg"
-          type="text"
-          onChange={(e) => (bloodGroup.current = e.target.value)}
-          placeholder="Please enter the blood group"
-        /> */}
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="p-contact">Contact</label>
         <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+          className="w-2/5 h-8 px-4 py-2 m-2 border border-black rounded-lg"
           id="p-contact"
           type="tel"
           onChange={(e) => (contactRef.current = e.target.value)}

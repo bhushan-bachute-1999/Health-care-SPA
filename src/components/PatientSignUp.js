@@ -2,10 +2,12 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { patientRegister } from "../store/patientSlice";
-import uniqid from "uniqid";
+import patientId from "../static/patient-id";
 
 const PatientSignUp = () => {
-  const nameRef = useRef("");
+  const fname = useRef("");
+  const mname = useRef("");
+  const lname = useRef("");
   const ageRef = useRef("");
   const genderRef = useRef(null);
   const addressRef = useRef("");
@@ -16,15 +18,29 @@ const PatientSignUp = () => {
   const { loggedInDoctor } = useSelector((state) => state.doctor);
   const navigate = useNavigate();
 
+  const generatePatientId = (fn, mn, ln) => {
+    const key = fn[0] + mn[0] + ln[0];
+    const hasKey = patientId.has(key);
+    if (hasKey) {
+      let len = patientId.get(key);
+      return key + len;
+    }
+    patientId.set(key).push(fn + mn + ln);
+    return;
+  };
+
   const registerPatient = (e) => {
     e.preventDefault();
     navigate(
-      `/doctor-dashboard/register-patient/name=${nameRef.current}&gender=${genderRef.current}&age=${ageRef.current}`
+      `/doctor-dashboard/register-patient/name=${fname.current}&gender=${genderRef.current}&age=${ageRef.current}`
     );
+    const id = generatePatientId(fname.current, mname.current, lname.current);
     dispatch(
       patientRegister({
-        id: uniqid(),
-        name: nameRef.current,
+        id: id,
+        fname: fname.current,
+        mname: mname.current,
+        lname: lname.current,
         age: ageRef.current,
         gender: genderRef.current,
         address: addressRef.current,
@@ -39,17 +55,39 @@ const PatientSignUp = () => {
   return (
     <form
       onSubmit={registerPatient}
-      className="w-2/5 p-4 border border-black m-auto mt-10 rounded-lg"
+      className="w-3/4 p-4 border border-black m-auto mt-10 rounded-lg"
     >
-      <div className="flex flex-col mt-4">
-        <label htmlFor="p-name">Name</label>
-        <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
-          id="p-name"
-          type="text"
-          onChange={(e) => (nameRef.current = e.target.value)}
-          placeholder="Enter patient name"
-        />
+      <div className="flex mt-4">
+        <div>
+          <label htmlFor="p-name">First Name</label>
+          <input
+            className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+            id="p-name"
+            type="text"
+            onChange={(e) => (fname.current = e.target.value)}
+            placeholder="Enter patient name"
+          />
+        </div>
+        <div className="ml-4">
+          <label htmlFor="p-name">Middle Name</label>
+          <input
+            className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+            id="p-name"
+            type="text"
+            onChange={(e) => (mname.current = e.target.value)}
+            placeholder="Enter patient name"
+          />
+        </div>
+        <div>
+          <label htmlFor="p-name">Last Name</label>
+          <input
+            className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+            id="p-name"
+            type="text"
+            onChange={(e) => (lname.current = e.target.value)}
+            placeholder="Enter patient name"
+          />
+        </div>
       </div>
       <div className="flex flex-col mt-4">
         <span>Gender</span>
@@ -81,7 +119,7 @@ const PatientSignUp = () => {
       <div className="flex flex-col mt-4">
         <label htmlFor="p-age">Age</label>
         <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+          className="w-2/5 h-8 px-4 py-2 m-2 border border-black rounded-lg"
           id="p-age"
           type="number"
           onChange={(e) => (ageRef.current = e.target.value)}
@@ -120,18 +158,11 @@ const PatientSignUp = () => {
             AB -ve
           </option>
         </select>
-        {/* <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
-          id="p-bg"
-          type="text"
-          onChange={(e) => (bloodGroup.current = e.target.value)}
-          placeholder="Please enter the blood group"
-        /> */}
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="p-contact">Contact</label>
         <input
-          className="h-8 px-4 py-2 m-2 border border-black rounded-lg"
+          className="w-2/5 h-8 px-4 py-2 m-2 border border-black rounded-lg"
           id="p-contact"
           type="tel"
           onChange={(e) => (contactRef.current = e.target.value)}

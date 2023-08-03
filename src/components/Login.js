@@ -39,7 +39,10 @@ const DoctorLogin = () => {
         Log in
       </button>
 
-      <Link to="/doctor-sign-up">
+      <Link
+        to="/doctor-sign-up"
+        className="bg-green-700 px-4 py-2 rounded-lg text-white mt-4"
+      >
         <span>New registration</span>
       </Link>
     </form>

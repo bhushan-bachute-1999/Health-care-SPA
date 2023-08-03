@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchText } from "../store/doctorSlice";
 
 const PatientInfo = (props) => {
-  const { name, age, address, contact, gender, bloodGroup } = props.info;
+  const { fname, mname, lname, age, address, contact, gender, bloodGroup } =
+    props.info;
   return (
     <tr>
       <td className="border w-3/12 border-black py-2 px-4 text-center">
-        {name}
+        {fname + " " + mname + " " + lname}
       </td>
       <td className="border w-2/12 border-black py-2 px-4 text-center">
         {gender}
@@ -72,13 +73,13 @@ const Header = () => {
 export const PatientListTable = () => {
   const { patients } = useSelector((state) => state.patient);
   const { loggedInDoctor, searchText } = useSelector((state) => state.doctor);
-
+  console.log("P", patients);
   const searchResult = patients.filter(
     (p) =>
       p.doctor.email === loggedInDoctor.email &&
-      p.name.toLowerCase().includes(searchText.toLowerCase())
+      p.fname.toLowerCase().includes(searchText.toLowerCase())
   );
-  console.log(searchResult);
+  console.log("Search", searchResult);
 
   if (searchResult.length === 0) {
     return (
